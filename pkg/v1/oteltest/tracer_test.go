@@ -29,6 +29,7 @@ var _ = Describe("Tracer", func() {
 		BeforeEach(func() {
 
 			ctx = context.Background()
+			// Create an error whost message we will add as an attribute to the OTEL Spam
 			err = errors.New(LogErrorMsg)
 			// Setup OTEL Tracing test code
 			sr = new(oteltest.SpanRecorder)
@@ -44,13 +45,13 @@ var _ = Describe("Tracer", func() {
 		})
 		It("should be possible to retrieve Span Events & Attributes", func() {
 			spans := sr.Completed()
-			By("extract the first span we can verify the name of the span")
+			By("extracting the first span we can verify the name of the span")
 			Expect(spans[0].Name()).To(Equal("Log Utils"))
-			By("extract the first Event verify its name")
+			By("extracting the first Event verify its name")
 			Expect(spans[0].Events()[0].Name).To(Equal("CreateSpan"))
-			By("validate the number of attributes added to the span")
+			By("validating the number of attributes added to the span")
 			Expect(spans[0].Events()[0].Attributes).Should(HaveLen(1))
-			By("validate the attributes has an entry in the map with the given key name and value")
+			By("validating the attributes has an entry in the map with the given key name and value")
 			Expect(spans[0].Events()[0].Attributes[attribute.Key(ErrorAttributeKey)].AsString()).
 				Should(Equal(LogErrorMsg))
 		})
