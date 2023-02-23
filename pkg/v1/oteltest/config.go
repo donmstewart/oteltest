@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package oteltest // import "go.opentelemetry.io/otel/oteltest"
+package oteltest // import "github.com/donmstewart/oteltest"
 
 import (
 	"context"
@@ -26,6 +26,7 @@ import (
 // defaultSpanContextFunc returns the default SpanContextFunc.
 func defaultSpanContextFunc() func(context.Context) trace.SpanContext {
 	var traceID, spanID uint64 = 1, 1
+
 	return func(ctx context.Context) trace.SpanContext {
 		var sc trace.SpanContext
 		if current := trace.SpanContextFromContext(ctx); current.IsValid() {
@@ -37,6 +38,7 @@ func defaultSpanContextFunc() func(context.Context) trace.SpanContext {
 		}
 		var sid trace.SpanID
 		binary.BigEndian.PutUint64(sid[:], atomic.AddUint64(&spanID, 1))
+
 		return sc.WithSpanID(sid)
 	}
 }
