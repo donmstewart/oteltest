@@ -60,7 +60,7 @@ var _ = Describe("Tracer", func() {
 			Expect(spans[0].Events()[0].Attributes[attribute.Key(ErrorAttributeKey)].AsString()).
 				Should(Equal(LogErrorMsg))
 		})
-		It("should be possible to retrieve Span Events & Attributes", func() {
+		It("should be possible to validate RecordError & SetStatus", func() {
 			spans = sr.Completed()
 			By("checking the span we should see it is in error")
 			Expect(spans[0].StatusCode()).Should(Equal(codes.Error))
